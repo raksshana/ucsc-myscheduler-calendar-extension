@@ -41,7 +41,7 @@ Export your UCSC class schedule to Google Calendar in one click, or download an
 > Privacy: everything is parsed in your browser. The developer receives nothing —
 > no server, no analytics, no tracking. The Google option talks only to Google's
 > Calendar API using your own account. Full policy:
-> <PRIVACY_POLICY_URL>
+> https://github.com/raksshana/ucsc-myscheduler-calendar-extension/blob/main/PRIVACY.md
 
 **Screenshots (1280×800, 1–5):**
 1. Popup on the MyScheduler page showing the parsed class list + "One-click Google" tab
@@ -55,7 +55,7 @@ Export your UCSC class schedule to Google Calendar in one click, or download an
 
 **Support / contact email:** raksshana.hb21@gmail.com
 
-**Privacy policy URL:** `<PRIVACY_POLICY_URL>`
+**Privacy policy URL:** https://github.com/raksshana/ucsc-myscheduler-calendar-extension/blob/main/PRIVACY.md
 (e.g. the raw or rendered `PRIVACY.md` on the public repo, or a GitHub Pages page)
 
 ---
@@ -120,7 +120,7 @@ from a remote server.
 - **App name:** UCSC Schedule Exporter
 - **User support email / developer contact:** raksshana.hb21@gmail.com
 - **App homepage:** the public repo URL above
-- **Privacy policy link:** `<PRIVACY_POLICY_URL>`
+- **Privacy policy link:** https://github.com/raksshana/ucsc-myscheduler-calendar-extension/blob/main/PRIVACY.md
 - **Authorized domain:** `github.com` (or your Pages domain)
 - **Scopes:** `calendar.calendarlist.readonly`, `calendar.events`,
   `calendar.app.created` — all "sensitive"; a demo video is required.
