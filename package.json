@@ -1,0 +1,15 @@
+{
+  "name": "ucsc-schedule-to-gcal",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Chrome extension: export a UCSC class schedule to Google Calendar with recurring weekly events.",
+  "scripts": {
+    "build:data": "node data/build-datasets.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
+  }
+}

@@ -1,0 +1,98 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --line: #e3e3e3;
+  --accent: #1e3a8a;
+  --skip: #9a9a9a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1e1e1e;
+    --fg: #eaeaea;
+    --muted: #a0a0a0;
+    --line: #3a3a3a;
+    --accent: #93b4ff;
+    --skip: #777;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 380px;
+  margin: 0;
+  padding: 14px;
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+h1 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+.term {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status {
+  margin: 10px 0;
+  color: var(--muted);
+}
+.status:empty { display: none; }
+
+.classes {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.cls {
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+.cls:first-child { border-top: 0; }
+
+.cls-head { font-weight: 600; }
+
+.cls-sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.cls.excluded .cls-head,
+.cls.excluded .cls-sub {
+  color: var(--skip);
+}
+
+footer { margin-top: 12px; }
+
+button {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.hint {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}

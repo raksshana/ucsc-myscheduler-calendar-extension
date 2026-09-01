@@ -1,0 +1,398 @@
+{
+  "Fall 2026": {
+    "examWindow": [
+      "2026-12-07",
+      "2026-12-11"
+    ],
+    "rows": [
+      {
+        "dayGroup": "MWF",
+        "startTime": "08:00",
+        "examDate": "2026-12-07",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "09:20",
+        "examDate": "2026-12-08",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "10:40",
+        "examDate": "2026-12-08",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "12:00",
+        "examDate": "2026-12-09",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "13:20",
+        "examDate": "2026-12-09",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "14:40",
+        "examDate": "2026-12-10",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "16:00",
+        "examDate": "2026-12-10",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "17:20",
+        "examDate": "2026-12-11",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "19:10",
+        "examDate": "2026-12-07",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "08:00",
+        "examDate": "2026-12-07",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "09:50",
+        "examDate": "2026-12-10",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "11:40",
+        "examDate": "2026-12-08",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "13:30",
+        "examDate": "2026-12-07",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "15:20",
+        "examDate": "2026-12-09",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "17:20",
+        "examDate": "2026-12-08",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "19:10",
+        "examDate": "2026-12-09",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      }
+    ],
+    "nonStandard": {
+      "1": {
+        "examDate": "2026-12-11",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      "2": {
+        "examDate": "2026-12-10",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      }
+    }
+  },
+  "Winter 2027": {
+    "examWindow": [
+      "2027-03-15",
+      "2027-03-19"
+    ],
+    "rows": [
+      {
+        "dayGroup": "MWF",
+        "startTime": "08:00",
+        "examDate": "2027-03-15",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "09:20",
+        "examDate": "2027-03-15",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "10:40",
+        "examDate": "2027-03-16",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "12:00",
+        "examDate": "2027-03-16",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "13:20",
+        "examDate": "2027-03-17",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "14:40",
+        "examDate": "2027-03-18",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "16:00",
+        "examDate": "2027-03-15",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "17:20",
+        "examDate": "2027-03-15",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "19:10",
+        "examDate": "2027-03-16",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "08:00",
+        "examDate": "2027-03-19",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "09:50",
+        "examDate": "2027-03-18",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "11:40",
+        "examDate": "2027-03-18",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "13:30",
+        "examDate": "2027-03-17",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "15:20",
+        "examDate": "2027-03-16",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "17:20",
+        "examDate": "2027-03-17",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "19:10",
+        "examDate": "2027-03-17",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      }
+    ],
+    "nonStandard": {
+      "1": {
+        "examDate": "2027-03-18",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      "2": {
+        "examDate": "2027-03-19",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      }
+    }
+  },
+  "Spring 2027": {
+    "examWindow": [
+      "2027-06-07",
+      "2027-06-10"
+    ],
+    "rows": [
+      {
+        "dayGroup": "MWF",
+        "startTime": "08:00",
+        "examDate": "2027-06-08",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "09:20",
+        "examDate": "2027-06-07",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "10:40",
+        "examDate": "2027-06-09",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "12:00",
+        "examDate": "2027-06-07",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "13:20",
+        "examDate": "2027-06-10",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "14:40",
+        "examDate": "2027-06-08",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "MWF",
+        "startTime": "16:00",
+        "examDate": "2027-06-08",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "17:20",
+        "examDate": "2027-06-07",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "MW",
+        "startTime": "19:10",
+        "examDate": "2027-06-09",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "08:00",
+        "examDate": "2027-06-09",
+        "examStart": "08:00",
+        "examEnd": "11:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "09:50",
+        "examDate": "2027-06-07",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "11:40",
+        "examDate": "2027-06-08",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "13:30",
+        "examDate": "2027-06-09",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "15:20",
+        "examDate": "2027-06-10",
+        "examStart": "12:00",
+        "examEnd": "15:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "17:20",
+        "examDate": "2027-06-10",
+        "examStart": "16:00",
+        "examEnd": "19:00"
+      },
+      {
+        "dayGroup": "TuTh",
+        "startTime": "19:10",
+        "examDate": "2027-06-10",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      }
+    ],
+    "nonStandard": {
+      "1": {
+        "examDate": "2027-06-09",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      },
+      "2": {
+        "examDate": "2027-06-10",
+        "examStart": "19:30",
+        "examEnd": "22:30"
+      }
+    }
+  }
+}

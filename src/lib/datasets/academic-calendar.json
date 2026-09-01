@@ -1,0 +1,35 @@
+{
+  "Fall 2026": {
+    "instructionStart": "2026-09-24",
+    "instructionEnd": "2026-12-04",
+    "finalsStart": "2026-12-07",
+    "finalsEnd": "2026-12-11",
+    "holidays": [
+      "2026-11-11",
+      "2026-11-26",
+      "2026-11-27"
+    ],
+    "timezone": "America/Los_Angeles"
+  },
+  "Winter 2027": {
+    "instructionStart": "2027-01-04",
+    "instructionEnd": "2027-03-12",
+    "finalsStart": "2027-03-15",
+    "finalsEnd": "2027-03-19",
+    "holidays": [
+      "2027-01-18",
+      "2027-02-15"
+    ],
+    "timezone": "America/Los_Angeles"
+  },
+  "Spring 2027": {
+    "instructionStart": "2027-03-29",
+    "instructionEnd": "2027-06-04",
+    "finalsStart": "2027-06-07",
+    "finalsEnd": "2027-06-10",
+    "holidays": [
+      "2027-05-31"
+    ],
+    "timezone": "America/Los_Angeles"
+  }
+}
