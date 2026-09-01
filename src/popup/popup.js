@@ -131,6 +131,7 @@ function filteredSchedule() {
 function renderGoogle() {
   $("#connect").hidden = state.connected;
   $("#controls").hidden = !state.connected;
+  $("#footer").hidden = !state.connected;
   if (!state.connected) return;
 
   const select = $("#calendar");
