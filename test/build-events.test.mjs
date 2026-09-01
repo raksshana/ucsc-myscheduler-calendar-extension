@@ -25,7 +25,9 @@ test("buildEvents — fixture yields 4 events, MUSC 11C skipped", () => {
   assert.equal(events.length, 4);
   assert.deepEqual(skipped, ["MUSC 11C-01"]);
 
-  const cse = events.find((e) => e.iCalUID === "ucsc-fall2026-11881-m0");
+  const cse = events.find(
+    (e) => e.extendedProperties.private.ucscExport === "fall2026:11881:m0",
+  );
   assert.equal(cse.summary, "CSE 101 Lecture");
   assert.equal(cse.location, "Kresge Acad 3105");
   assert.equal(cse.start.dateTime, "2026-09-25T16:00:00");

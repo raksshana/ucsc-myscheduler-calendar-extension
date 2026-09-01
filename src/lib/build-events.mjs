@@ -74,7 +74,7 @@ export function buildEvents(schedule, { reminderMinutes = 15, academicCalendar }
         end,
         recurrence,
         reminders,
-        iCalUID: `ucsc-${slug}-${c.classNumber}-m${i}`,
+        extendedProperties: { private: { ucscExport: `${slug}:${c.classNumber}:m${i}` } },
         source: { title: "MyScheduler", url: "https://ucsc.collegescheduler.com/" },
       });
     });
