@@ -1,4 +1,4 @@
-# UCSC Schedule → Google Calendar
+# UCSC Schedule Exporter
 
 Chrome extension that exports a UCSC class schedule (from **MyScheduler**, and later
 the **MyUCSC portal**) straight into **Google Calendar** as recurring weekly events —
