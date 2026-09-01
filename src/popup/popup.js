@@ -103,7 +103,6 @@ function renderTabs() {
   }
   $("#panel-google").hidden = state.tab !== "google";
   $("#panel-ics").hidden = state.tab !== "ics";
-  $("#openrow").hidden = state.tab !== "google";
 }
 
 function setTab(name) {
