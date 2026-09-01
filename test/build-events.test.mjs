@@ -32,7 +32,7 @@ test("buildEvents — fixture yields 4 events, MUSC 11C skipped", () => {
   assert.equal(cse.start.timeZone, "America/Los_Angeles");
   assert.equal(cse.reminders.overrides[0].minutes, 15);
   assert.match(cse.recurrence[0], /^RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR/);
-  assert.match(cse.description, /Class #11881/);
+  assert.match(cse.description, /^Data Structs & Algs\nSection 01\n/);
 
   assert.ok(events.find((e) => e.summary === "PHYS 5N Lab"));
   assert.ok(events.find((e) => e.summary === "CSE 101 Section"));
