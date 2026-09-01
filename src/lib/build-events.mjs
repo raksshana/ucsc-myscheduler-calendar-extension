@@ -27,7 +27,7 @@ function classDescription(c) {
     c.title,
     `Section ${c.section}`,
     "",
-    "Added by the UCSC Schedule → Google Calendar extension.",
+    "Added by the UCSC Schedule Exporter extension.",
   ].join("\n");
 }
 
