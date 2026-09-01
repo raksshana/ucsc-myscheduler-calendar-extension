@@ -53,7 +53,7 @@ Export your UCSC class schedule to Google Calendar in one click, or download an
 **Homepage URL:** `https://github.com/raksshana/ucsc-myscheduler-calendar-extension`
 (the repo must be **public** for this and for OAuth verification)
 
-**Support / contact email:** `<CONTACT EMAIL>`
+**Support / contact email:** raksshana.hb21@gmail.com
 
 **Privacy policy URL:** `<PRIVACY_POLICY_URL>`
 (e.g. the raw or rendered `PRIVACY.md` on the public repo, or a GitHub Pages page)
@@ -118,7 +118,7 @@ from a remote server.
 ## OAuth consent screen (Google Auth Platform)
 
 - **App name:** UCSC Schedule Exporter
-- **User support email / developer contact:** `<CONTACT EMAIL>`
+- **User support email / developer contact:** raksshana.hb21@gmail.com
 - **App homepage:** the public repo URL above
 - **Privacy policy link:** `<PRIVACY_POLICY_URL>`
 - **Authorized domain:** `github.com` (or your Pages domain)

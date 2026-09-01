@@ -94,4 +94,4 @@ Updates to this policy will be posted here with a new "Last updated" date.
 
 Questions: open an issue at
 <https://github.com/raksshana/ucsc-myscheduler-calendar-extension/issues>
-or email `<CONTACT EMAIL>`.
+or email raksshana.hb21@gmail.com.
