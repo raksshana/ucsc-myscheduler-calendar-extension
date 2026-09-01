@@ -328,7 +328,7 @@ async function onDisconnect() {
   await send({ type: "GCAL_DISCONNECT" });
   state.connected = false;
   state.calendars = [];
-  setResult("Disconnected.");
+  setResult("Signed out of Google.");
   renderGoogle();
 }
 
