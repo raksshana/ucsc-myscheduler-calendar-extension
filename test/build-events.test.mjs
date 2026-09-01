@@ -96,7 +96,7 @@ test("buildEvents — MyUCSC source: instructor in description, per-section date
   const { events } = buildEvents(uc, { academicCalendar, reminderMinutes: 15 });
 
   const phys = events.find((e) => e.summary === "PHYS 5C Lecture");
-  assert.match(phys.description, /Instructor: Barun Dhar/);
+  assert.doesNotMatch(phys.description, /Instructor/);
   assert.equal(phys.start.dateTime, "2026-09-25T10:40:00"); // first MWF day on/after 09/24 (Fri)
   assert.match(phys.recurrence[0], /UNTIL=20261205T075959Z/); // from the section's 12/04 end date
   assert.ok(events.find((e) => e.summary === "CSE 101 Discussion"));

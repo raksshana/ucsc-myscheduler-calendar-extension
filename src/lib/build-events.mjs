@@ -26,12 +26,9 @@ function classDescription(c) {
   return [
     c.title,
     `Section ${c.section}`,
-    c.instructor ? `Instructor: ${c.instructor}` : null,
     "",
     "Added by the UCSC Schedule → Google Calendar extension.",
-  ]
-    .filter((line) => line != null)
-    .join("\n");
+  ].join("\n");
 }
 
 function finalDescription(c) {
