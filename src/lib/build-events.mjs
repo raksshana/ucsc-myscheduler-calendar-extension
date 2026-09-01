@@ -21,9 +21,7 @@ export function termSlug(term) {
 function describe(c, m) {
   return [
     c.title,
-    m.location ? `Location: ${m.location}` : null,
     `Section ${c.section} · Class #${c.classNumber}`,
-    c.status ? `Status: ${c.status}` : null,
     c.instructor ? `Instructor: ${c.instructor}` : null,
     "",
     "Added by the UCSC Schedule → Google Calendar extension.",
