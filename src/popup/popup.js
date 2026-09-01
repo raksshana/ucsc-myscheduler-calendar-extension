@@ -23,6 +23,7 @@ const state = {
   exports: {},
   reminderMinutes: DEFAULT_REMINDER,
   includeFinals: true,
+  tab: "google",
 };
 
 const send = (message) => chrome.runtime.sendMessage(message);
@@ -85,14 +86,31 @@ function renderSchedule(data) {
     list.append(li);
   }
 
-  $("#options").hidden = false;
+  $("#exporter").hidden = false;
   renderOptions();
+  renderTabs();
 }
 
 function renderOptions() {
   $("#includeFinals").checked = state.includeFinals;
   syncReminderChips();
   refreshButtons();
+}
+
+function renderTabs() {
+  for (const btn of document.querySelectorAll(".tab")) {
+    btn.classList.toggle("on", btn.dataset.tab === state.tab);
+  }
+  $("#panel-google").hidden = state.tab !== "google";
+  $("#panel-ics").hidden = state.tab !== "ics";
+  $("#openrow").hidden = state.tab !== "google";
+}
+
+function setTab(name) {
+  state.tab = name;
+  chrome.storage.sync.set({ exporterTab: name });
+  setResult("");
+  renderTabs();
 }
 
 function selectedMeetingCount() {
@@ -111,7 +129,6 @@ function filteredSchedule() {
 // ---------- google calendar section ----------
 
 function renderGoogle() {
-  $("#gcal").hidden = !state.schedule;
   $("#connect").hidden = state.connected;
   $("#controls").hidden = !state.connected;
   if (!state.connected) return;
@@ -323,6 +340,10 @@ function setResult(text, kind) {
 
 // ---------- wiring ----------
 
+for (const btn of document.querySelectorAll(".tab")) {
+  btn.addEventListener("click", () => setTab(btn.dataset.tab));
+}
+
 $("#connect").addEventListener("click", onConnect);
 $("#export").addEventListener("click", onExport);
 $("#downloadIcs").addEventListener("click", onDownloadIcs);
@@ -362,9 +383,15 @@ async function main() {
     return;
   }
 
-  const prefs = await chrome.storage.sync.get(["defaultReminder", "includeFinals"]);
+  const prefs = await chrome.storage.sync.get([
+    "defaultReminder",
+    "includeFinals",
+    "exporterTab",
+  ]);
   if (typeof prefs.defaultReminder === "number") state.reminderMinutes = prefs.defaultReminder;
   if (typeof prefs.includeFinals === "boolean") state.includeFinals = prefs.includeFinals;
+  if (prefs.exporterTab === "google" || prefs.exporterTab === "ics")
+    state.tab = prefs.exporterTab;
 
   let data;
   try {

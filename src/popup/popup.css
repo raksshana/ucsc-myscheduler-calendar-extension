@@ -129,18 +129,29 @@ button.primary,
   border-radius: 6px;
   cursor: pointer;
 }
-button.primary.outline {
-  color: var(--accent);
-  background: none;
-}
 button.primary:disabled { opacity: 0.55; cursor: default; }
 
-.section-label {
-  margin: 0 0 6px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 4px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tab {
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--muted);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.tab.on {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .hint {

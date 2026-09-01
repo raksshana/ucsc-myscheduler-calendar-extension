@@ -31,7 +31,16 @@
 
     <ul id="classes" class="classes"></ul>
 
-    <section id="options" hidden>
+    <section id="exporter" hidden>
+      <div class="tabs" role="tablist">
+        <button id="tab-google" class="tab" type="button" data-tab="google">
+          One-click Google
+        </button>
+        <button id="tab-ics" class="tab" type="button" data-tab="ics">
+          Download .ics
+        </button>
+      </div>
+
       <div class="field">
         <span>Reminder</span>
         <div id="reminders" class="chips">
@@ -49,34 +58,35 @@
         <span>Add final-exam events</span>
       </label>
 
-      <button id="downloadIcs" type="button" class="primary outline">Download .ics file</button>
-      <p class="hint">Import into Apple Calendar or Google Calendar yourself.</p>
+      <div id="panel-google" class="panel">
+        <button id="connect" type="button" hidden>Connect Google Calendar</button>
+        <div id="controls" hidden>
+          <label class="field">
+            <span>Calendar</span>
+            <select id="calendar"></select>
+          </label>
+          <button id="export" type="button" class="primary">Export to Google Calendar</button>
+          <div class="foot">
+            <button id="undo" type="button" class="link" hidden></button>
+            <button id="disconnect" type="button" class="link">Disconnect</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-ics" class="panel" hidden>
+        <button id="downloadIcs" type="button" class="primary">Download .ics file</button>
+        <p class="hint">
+          Then import it — Apple Calendar: File → Import. Google Calendar:
+          Settings → Import &amp; export.
+        </p>
+      </div>
 
       <p id="result" class="result"></p>
-      <p class="openrow">
+      <p id="openrow" class="openrow">
         <a id="openCal" class="link" target="_blank" rel="noreferrer" hidden
           >Open Google Calendar ↗</a
         >
       </p>
-    </section>
-
-    <section id="gcal" class="gcal" hidden>
-      <div class="rule"></div>
-      <p class="section-label">Or send it straight to Google Calendar</p>
-
-      <button id="connect" type="button" hidden>Connect Google Calendar</button>
-
-      <div id="controls" hidden>
-        <label class="field">
-          <span>Calendar</span>
-          <select id="calendar"></select>
-        </label>
-        <button id="export" type="button" class="primary">Export to Google Calendar</button>
-        <div class="foot">
-          <button id="undo" type="button" class="link" hidden></button>
-          <button id="disconnect" type="button" class="link">Disconnect</button>
-        </div>
-      </div>
     </section>
 
     <script type="module" src="popup.js"></script>
