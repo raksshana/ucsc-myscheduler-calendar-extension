@@ -6,15 +6,17 @@ one click, with location + reminder, and computed final-exam events.
 
 See [`docs/PLAN.md`](docs/PLAN.md) for the full design and decisions.
 
-## Status — Phase 3
+## Status — Phase 4
 
 - Parsers for **MyScheduler** (`schedule-parse.mjs`) and the **MyUCSC** Class
   Schedule (`myucsc-parse.mjs`); MyUCSC also gives instructor names and real
   per-section dates.
 - Registrar datasets built into `src/lib/datasets/` from `data/raw/` (instruction
   window + holidays; final-exam matrix).
-- Popup: lists sections with checkboxes, connect to Google, pick a writable
-  calendar or make a new one, choose a reminder, toggle final-exam events, export.
+- Popup: lists sections with checkboxes, choose a reminder, toggle final-exam
+  events, then either **download a .ics** (Apple Calendar / manual Google import)
+  or **connect Google** and push events straight in (pick a writable calendar or
+  make a new one).
 - Recurring weekly events (`RRULE` + holiday `EXDATE`s), `America/Los_Angeles`,
   per-event reminder; one-off final-exam events matched from the registrar
   matrix. Re-export replaces; "Undo last export" removes what it created.

@@ -7,8 +7,8 @@ straight into Google Calendar as recurring weekly events, one click.
 
 | Topic | Decision |
 |---|---|
-| Calendar target | **Google Calendar only** via the API. No ICS, no Apple, no file download. |
-| Export trigger | One click in the popup → OAuth → events created directly. |
+| Calendar target | **Google Calendar** one-click via the API, **and** a **.ics download** (Apple Calendar, or import into Google yourself). |
+| Export trigger | Google: one click → OAuth → events created directly. ICS: one click → file download, no sign-in. |
 | Sources | **MyScheduler** (`ucsc.collegescheduler.com`) first; **MyUCSC portal** (`my.ucsc.edu`) later. |
 | Recurring events | One `RRULE:FREQ=WEEKLY;BYDAY=…;UNTIL=<lastInstruction>` per meeting pattern. Lecture and lab = separate series. |
 | Timezone | `America/Los_Angeles` with a real VTIMEZONE / `start.timeZone` (fall crosses the DST change). |
@@ -85,8 +85,13 @@ test/parse.test.mjs
   ids). Adds instructor + full component names; per-section `startDate`/`endDate`
   override the dataset instruction window in `buildEvents`. Content script runs
   in all frames; only the schedule frame answers. Popup works on both hosts.
-- **P4 — release.** Per-course colors, options page, privacy policy, OAuth
-  verification, Web Store submission, real icons.
+- **P4 — .ics download.** ✅ `ics.mjs` serializes `buildEvents` output to RFC 5545
+  (static `America/Los_Angeles` VTIMEZONE, line folding, text escaping, `VALARM`
+  from the reminder, stable `UID`s). Popup gains a "Download .ics" button that
+  works without connecting Google; the Google one-click sits below it.
+- **P5 — release.** Per-course colors, options page, real icon, privacy policy
+  page, Google OAuth verification, Chrome Web Store submission (extension ID
+  changes on publish → update the OAuth client's item ID).
 
 ## Known edge cases / assumptions
 

@@ -1,7 +1,19 @@
+import { buildEvents } from "../lib/build-events.mjs";
+import { buildICS } from "../lib/ics.mjs";
+
 const $ = (sel) => document.querySelector(sel);
 const HOST_RE = /^https:\/\/(ucsc\.collegescheduler\.com|my\.ucsc\.edu)\//;
 const DEFAULT_REMINDER = 15;
 const NEW_CALENDAR = "__new__";
+
+const datasets = {};
+async function dataset(name) {
+  if (!datasets[name]) {
+    const url = chrome.runtime.getURL(`src/lib/datasets/${name}.json`);
+    datasets[name] = await (await fetch(url)).json();
+  }
+  return datasets[name];
+}
 
 const state = {
   schedule: null,
@@ -49,7 +61,7 @@ function renderSchedule(data) {
         if (check.checked) state.selected.add(c.classNumber);
         else state.selected.delete(c.classNumber);
         li.classList.toggle("unchecked", !check.checked);
-        refreshExportButton();
+        refreshButtons();
       });
       li.append(check);
     }
@@ -72,6 +84,15 @@ function renderSchedule(data) {
     li.append(body);
     list.append(li);
   }
+
+  $("#options").hidden = false;
+  renderOptions();
+}
+
+function renderOptions() {
+  $("#includeFinals").checked = state.includeFinals;
+  syncReminderChips();
+  refreshButtons();
 }
 
 function selectedMeetingCount() {
@@ -112,19 +133,21 @@ function renderGoogle() {
   select.append(newOpt);
   if (prev) select.value = prev;
 
-  $("#includeFinals").checked = state.includeFinals;
-  syncReminderChips();
-  refreshExportButton();
+  refreshButtons();
   renderUndo();
 }
 
-function refreshExportButton() {
+function refreshButtons() {
   const n = selectedMeetingCount();
-  const btn = $("#export");
-  btn.disabled = !n;
-  btn.textContent = !n
-    ? "Nothing selected"
-    : `Export ${n} event${n === 1 ? "" : "s"}${state.includeFinals ? " + finals" : ""}`;
+  const suffix = state.includeFinals ? " + finals" : "";
+
+  const exp = $("#export");
+  exp.disabled = !n;
+  exp.textContent = !n ? "Nothing selected" : `Export ${n} event${n === 1 ? "" : "s"}${suffix}`;
+
+  const ics = $("#downloadIcs");
+  ics.disabled = !n;
+  ics.textContent = !n ? "Nothing selected" : `Download .ics (${n} event${n === 1 ? "" : "s"}${suffix})`;
 }
 
 function renderUndo() {
@@ -232,6 +255,40 @@ async function onExport() {
   }
 }
 
+async function onDownloadIcs() {
+  const btn = $("#downloadIcs");
+  btn.disabled = true;
+  setResult("Building .ics…");
+  try {
+    const built = buildEvents(filteredSchedule(), {
+      reminderMinutes: state.reminderMinutes,
+      includeFinals: state.includeFinals,
+      academicCalendar: await dataset("academic-calendar"),
+      finalExamMatrix: await dataset("final-exam-matrix"),
+    });
+    if (!built.events.length) throw new Error("Nothing to export — no timed classes selected.");
+
+    const blob = new Blob([buildICS(built)], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ucsc-${built.termSlug}.ics`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+    let msg = `Downloaded ${a.download} — ${built.events.length} event${
+      built.events.length === 1 ? "" : "s"
+    }. Import it in Apple Calendar (File → Import) or Google Calendar (Settings → Import & export).`;
+    if (built.unresolvedFinals?.length)
+      msg += ` No exam slot matched for ${built.unresolvedFinals.join(", ")}.`;
+    setResult(msg, "ok");
+  } catch (e) {
+    setResult(String(e.message || e), "err");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 async function onUndo(ev) {
   const slug = ev.currentTarget.dataset.slug;
   const btn = $("#undo");
@@ -268,13 +325,14 @@ function setResult(text, kind) {
 
 $("#connect").addEventListener("click", onConnect);
 $("#export").addEventListener("click", onExport);
+$("#downloadIcs").addEventListener("click", onDownloadIcs);
 $("#undo").addEventListener("click", onUndo);
 $("#disconnect").addEventListener("click", onDisconnect);
 
 $("#includeFinals").addEventListener("change", (e) => {
   state.includeFinals = e.target.checked;
   chrome.storage.sync.set({ includeFinals: state.includeFinals });
-  refreshExportButton();
+  refreshButtons();
 });
 
 $("#reminders").addEventListener("click", (e) => {
