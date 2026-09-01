@@ -39,18 +39,20 @@ function renderSchedule(data) {
     const li = document.createElement("li");
     li.className = included ? "cls" : "cls excluded";
 
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    check.className = "cls-check";
-    check.checked = included;
-    check.hidden = !included;
-    check.dataset.cls = c.classNumber;
-    check.addEventListener("change", () => {
-      if (check.checked) state.selected.add(c.classNumber);
-      else state.selected.delete(c.classNumber);
-      li.classList.toggle("unchecked", !check.checked);
-      refreshExportButton();
-    });
+    if (included) {
+      const check = document.createElement("input");
+      check.type = "checkbox";
+      check.className = "cls-check";
+      check.checked = true;
+      check.dataset.cls = c.classNumber;
+      check.addEventListener("change", () => {
+        if (check.checked) state.selected.add(c.classNumber);
+        else state.selected.delete(c.classNumber);
+        li.classList.toggle("unchecked", !check.checked);
+        refreshExportButton();
+      });
+      li.append(check);
+    }
 
     const body = document.createElement("div");
     const head = document.createElement("div");
@@ -67,7 +69,7 @@ function renderSchedule(data) {
         : "no meeting time — skipped";
     body.append(head, sub);
 
-    li.append(check, body);
+    li.append(body);
     list.append(li);
   }
 }

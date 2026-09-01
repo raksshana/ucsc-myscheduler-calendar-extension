@@ -50,9 +50,9 @@ h1 { margin: 0; font-size: 15px; color: var(--accent); }
   padding: 7px 0;
   border-top: 1px solid var(--line);
 }
+.cls.excluded { grid-template-columns: 1fr; }
 .cls:first-child { border-top: 0; }
 .cls-check { margin-top: 2px; }
-.cls-check[hidden] { visibility: hidden; }
 .cls-head { font-weight: 600; }
 .cls-sub { margin-top: 2px; color: var(--muted); font-size: 12px; }
 .cls.excluded .cls-head, .cls.excluded .cls-sub { color: var(--skip); }
