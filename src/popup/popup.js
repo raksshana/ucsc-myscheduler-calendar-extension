@@ -299,8 +299,8 @@ async function main() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   if (!tab?.url || !HOST_RE.test(tab.url)) {
-    status.textContent =
-      "Open your class schedule — MyScheduler’s “Potential Schedule” or MyUCSC’s “Class Schedule” — then reopen this popup.";
+    status.textContent = "";
+    $("#help").hidden = false;
     return;
   }
 
@@ -315,8 +315,8 @@ async function main() {
     data = null;
   }
   if (!data?.ok) {
-    status.textContent =
-      "Couldn’t find a class schedule on this page. On MyUCSC, open Enrollment → Class Schedule; on MyScheduler, generate a schedule first.";
+    status.textContent = "Couldn’t find a class schedule on this page.";
+    $("#help").hidden = false;
     return;
   }
   renderSchedule(data);

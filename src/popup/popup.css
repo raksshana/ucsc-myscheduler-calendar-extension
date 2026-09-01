@@ -42,6 +42,10 @@ h1 { margin: 0; font-size: 15px; color: var(--accent); }
 .status { margin: 10px 0; color: var(--muted); }
 .status:empty { display: none; }
 
+.help { font-size: 12px; color: var(--fg); }
+.help p { margin: 9px 0; }
+.help strong { color: var(--accent); }
+
 .classes { list-style: none; margin: 8px 0; padding: 0; }
 .cls {
   display: grid;
