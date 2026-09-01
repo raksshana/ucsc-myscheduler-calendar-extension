@@ -6,18 +6,21 @@ one click, with location + reminder, and computed final-exam events.
 
 See [`docs/PLAN.md`](docs/PLAN.md) for the full design and decisions.
 
-## Status — Phase 1 (Google Calendar export)
+## Status — Phase 3
 
-- MyScheduler DOM parser (`src/lib/schedule-parse.mjs`) with a fixture test.
-- Registrar datasets built into `src/lib/datasets/` from `data/raw/`.
-- Popup: lists sections, connect to Google, pick a writable calendar, choose a
-  reminder lead time, export.
+- Parsers for **MyScheduler** (`schedule-parse.mjs`) and the **MyUCSC** Class
+  Schedule (`myucsc-parse.mjs`); MyUCSC also gives instructor names and real
+  per-section dates.
+- Registrar datasets built into `src/lib/datasets/` from `data/raw/` (instruction
+  window + holidays; final-exam matrix).
+- Popup: lists sections with checkboxes, connect to Google, pick a writable
+  calendar or make a new one, choose a reminder, toggle final-exam events, export.
 - Recurring weekly events (`RRULE` + holiday `EXDATE`s), `America/Los_Angeles`,
-  per-event popup reminder. Deterministic `iCalUID`; re-export replaces, and
-  "Undo last export" deletes what it created.
-- OAuth is `chrome.identity.getAuthToken` with a Chrome-extension OAuth client;
-  requires the client ID in `manifest.json` `oauth2` and the loaded extension's
-  ID to match the client's registered item ID.
+  per-event reminder; one-off final-exam events matched from the registrar
+  matrix. Re-export replaces; "Undo last export" removes what it created.
+- OAuth: `chrome.identity.getAuthToken` with a Chrome-extension OAuth client —
+  client ID lives in `manifest.json` `oauth2`; the loaded extension's ID must
+  match the client's registered item ID.
 
 ## Develop
 

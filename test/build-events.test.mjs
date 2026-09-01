@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
 import { parseScheduleDoc } from "../src/lib/schedule-parse.mjs";
+import { parseScheduleDoc as parseMyUCSC } from "../src/lib/myucsc-parse.mjs";
 import { buildEvents } from "../src/lib/build-events.mjs";
 
 const academicCalendar = JSON.parse(
@@ -84,4 +85,19 @@ test("buildEvents — includeFinals off adds no exam events", () => {
     includeFinals: false,
   });
   assert.ok(!events.some((e) => e.summary.endsWith("Final Exam")));
+});
+
+test("buildEvents — MyUCSC source: instructor in description, per-section dates", () => {
+  const uc = parseMyUCSC(
+    new JSDOM(
+      readFileSync(new URL("../data/fixtures/myucsc.html", import.meta.url), "utf8"),
+    ).window.document,
+  );
+  const { events } = buildEvents(uc, { academicCalendar, reminderMinutes: 15 });
+
+  const phys = events.find((e) => e.summary === "PHYS 5C Lecture");
+  assert.match(phys.description, /Instructor: Barun Dhar/);
+  assert.equal(phys.start.dateTime, "2026-09-25T10:40:00"); // first MWF day on/after 09/24 (Fri)
+  assert.match(phys.recurrence[0], /UNTIL=20261205T075959Z/); // from the section's 12/04 end date
+  assert.ok(events.find((e) => e.summary === "CSE 101 Discussion"));
 });

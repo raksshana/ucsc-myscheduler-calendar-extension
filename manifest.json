@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "UCSC Schedule Exporter",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Export your UCSC class schedule to Google Calendar as recurring weekly events, one click.",
   "icons": {
     "16": "icons/icon16.png",
@@ -36,12 +36,18 @@
       "matches": ["https://ucsc.collegescheduler.com/*"],
       "js": ["src/content/myscheduler.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://my.ucsc.edu/*"],
+      "js": ["src/content/myucsc.js"],
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["src/lib/schedule-parse.mjs"],
-      "matches": ["https://ucsc.collegescheduler.com/*"]
+      "resources": ["src/lib/schedule-parse.mjs", "src/lib/myucsc-parse.mjs"],
+      "matches": ["https://ucsc.collegescheduler.com/*", "https://my.ucsc.edu/*"]
     }
   ]
 }

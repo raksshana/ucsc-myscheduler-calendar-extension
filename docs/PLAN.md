@@ -80,8 +80,11 @@ test/parse.test.mjs
   lectures surface as an "add manually" list. Per-section checkboxes in the
   popup. "＋ New calendar" option (adds `calendar.app.created` scope; undo of a
   new-calendar export deletes the whole calendar).
-- **P3 — MyUCSC portal.** Second parser: instructor names, real per-section
-  start/end dates, explicit final-exam group when present.
+- **P3 — MyUCSC portal.** ✅ `myucsc-parse.mjs` reads the PeopleSoft "Class
+  Schedule" grid (keyed off `PAGROUPDIVIDER` + `<th>` labels, not `win0div*`
+  ids). Adds instructor + full component names; per-section `startDate`/`endDate`
+  override the dataset instruction window in `buildEvents`. Content script runs
+  in all frames; only the schedule frame answers. Popup works on both hosts.
 - **P4 — release.** Per-course colors, options page, privacy policy, OAuth
   verification, Web Store submission, real icons.
 

@@ -1,5 +1,5 @@
 const $ = (sel) => document.querySelector(sel);
-const MYSCHEDULER_RE = /^https:\/\/ucsc\.collegescheduler\.com\//;
+const HOST_RE = /^https:\/\/(ucsc\.collegescheduler\.com|my\.ucsc\.edu)\//;
 const DEFAULT_REMINDER = 15;
 const NEW_CALENDAR = "__new__";
 
@@ -279,9 +279,9 @@ async function main() {
   const status = $("#status");
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  if (!tab?.url || !MYSCHEDULER_RE.test(tab.url)) {
+  if (!tab?.url || !HOST_RE.test(tab.url)) {
     status.textContent =
-      "Open your MyScheduler “Potential Schedule” page, then reopen this popup.";
+      "Open your class schedule — MyScheduler’s “Potential Schedule” or MyUCSC’s “Class Schedule” — then reopen this popup.";
     return;
   }
 
@@ -293,11 +293,11 @@ async function main() {
   try {
     data = await chrome.tabs.sendMessage(tab.id, { type: "UCSC_PARSE" });
   } catch {
-    status.textContent = "Couldn’t reach the page. Reload the MyScheduler tab and try again.";
-    return;
+    data = null;
   }
   if (!data?.ok) {
-    status.textContent = `Couldn’t parse the schedule (${data?.reason ?? "unknown error"}).`;
+    status.textContent =
+      "Couldn’t find a class schedule on this page. On MyUCSC, open Enrollment → Class Schedule; on MyScheduler, generate a schedule first.";
     return;
   }
   renderSchedule(data);

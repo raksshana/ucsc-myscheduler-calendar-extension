@@ -85,7 +85,14 @@ export function buildEvents(
       continue;
     }
     c.meetings.forEach((m, i) => {
-      const { start, end, recurrence } = buildRecurrence(m, termInfo);
+      // MyUCSC gives real per-section dates; MyScheduler doesn't, so fall back
+      // to the term's instruction window from the dataset.
+      const mTerm = {
+        ...termInfo,
+        instructionStart: m.startDate || termInfo.instructionStart,
+        instructionEnd: m.endDate || termInfo.instructionEnd,
+      };
+      const { start, end, recurrence } = buildRecurrence(m, mTerm);
       const comp = COMPONENT_LABEL[c.component] || "";
       events.push({
         summary: `${c.subject} ${c.course}${comp ? " " + comp : ""}`,
