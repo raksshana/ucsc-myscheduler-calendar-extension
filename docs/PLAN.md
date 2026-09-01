@@ -75,9 +75,11 @@ test/parse.test.mjs
   calendar picker, reminder-minutes UI, recurrence builder (RRULE + holiday
   EXDATEs), sequential `events.insert` in the service worker, deterministic
   `iCalUID` + stored event IDs for re-export/undo.
-- **P2 — finals + create-calendar.** Matrix resolver, exam events, "add manually"
-  list for unresolved classes, "Create new calendar…" option (needs
-  `calendar.app.created` scope), class-selection checkboxes.
+- **P2 — finals + create-calendar.** ✅ `resolve-final.mjs` matches lectures to
+  the exam matrix by day-family + start time; one-off exam events; unmatched
+  lectures surface as an "add manually" list. Per-section checkboxes in the
+  popup. "＋ New calendar" option (adds `calendar.app.created` scope; undo of a
+  new-calendar export deletes the whole calendar).
 - **P3 — MyUCSC portal.** Second parser: instructor names, real per-section
   start/end dates, explicit final-exam group when present.
 - **P4 — release.** Per-course colors, options page, privacy policy, OAuth

@@ -37,6 +37,17 @@ export async function listCalendars(token) {
   return items.map((c) => ({ id: c.id, summary: c.summary, primary: !!c.primary }));
 }
 
+export function createCalendar(token, summary, timeZone) {
+  return api(token, "/calendars", {
+    method: "POST",
+    body: JSON.stringify({ summary, timeZone }),
+  });
+}
+
+export function deleteCalendar(token, calendarId) {
+  return api(token, `/calendars/${encodeURIComponent(calendarId)}`, { method: "DELETE" });
+}
+
 export function insertEvent(token, calendarId, event) {
   return api(token, `/calendars/${encodeURIComponent(calendarId)}/events`, {
     method: "POST",

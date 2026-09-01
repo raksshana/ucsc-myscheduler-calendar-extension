@@ -1,10 +1,12 @@
 /**
- * ScheduleData (+ options + academic-calendar dataset) -> Google Calendar
- * event resources, one per weekly meeting pattern.
+ * ScheduleData (+ datasets + options) -> Google Calendar event resources:
+ * one recurring event per weekly meeting pattern, plus one final-exam event
+ * per lecture that matches a slot in the registrar's exam matrix.
  *
- * Pure. Finals events are Phase 2.
+ * Pure.
  */
 import { buildRecurrence } from "./recurrence.mjs";
+import { resolveFinal } from "./resolve-final.mjs";
 
 const COMPONENT_LABEL = {
   LEC: "Lecture",
@@ -14,11 +16,13 @@ const COMPONENT_LABEL = {
   SEM: "Seminar",
 };
 
+const SOURCE = { title: "MyScheduler", url: "https://ucsc.collegescheduler.com/" };
+
 export function termSlug(term) {
   return `${term.quarter}${term.year}`.toLowerCase();
 }
 
-function describe(c, m) {
+function classDescription(c) {
   return [
     c.title,
     `Section ${c.section}`,
@@ -26,18 +30,34 @@ function describe(c, m) {
     "",
     "Added by the UCSC Schedule → Google Calendar extension.",
   ]
-    .filter((line) => line !== null && line !== undefined)
+    .filter((line) => line != null)
     .join("\n");
+}
+
+function finalDescription(c) {
+  return [
+    c.title,
+    `Section ${c.section}`,
+    "",
+    "Auto-computed from the UCSC final examination schedule — confirm the date, " +
+      "time, and room with your instructor. Some courses have take-home or " +
+      "rescheduled finals.",
+  ].join("\n");
 }
 
 /**
  * @param {object} schedule  parseScheduleDoc output
  * @param {object} opts
- * @param {number} opts.reminderMinutes   0 = no reminder
- * @param {object} opts.academicCalendar  academic-calendar.json
- * @returns {{ termSlug:string, termLabel:string, events:object[], skipped:string[] }}
+ * @param {number} opts.reminderMinutes    0 = no reminder
+ * @param {object} opts.academicCalendar   academic-calendar.json
+ * @param {boolean} opts.includeFinals
+ * @param {object} [opts.finalExamMatrix]  final-exam-matrix.json (required if includeFinals)
+ * @returns {{ termSlug, termLabel, timezone, events, skipped, unresolvedFinals }}
  */
-export function buildEvents(schedule, { reminderMinutes = 15, academicCalendar }) {
+export function buildEvents(
+  schedule,
+  { reminderMinutes = 15, academicCalendar, includeFinals = false, finalExamMatrix },
+) {
   const label = schedule.term?.label;
   if (!label) throw new Error("Could not determine the term from the page.");
 
@@ -49,6 +69,7 @@ export function buildEvents(schedule, { reminderMinutes = 15, academicCalendar }
   }
   const termInfo = { ...term, quarter: schedule.term.quarter, year: schedule.term.year };
   const slug = termSlug(schedule.term);
+  const tz = term.timezone;
 
   const reminders =
     reminderMinutes > 0
@@ -65,20 +86,50 @@ export function buildEvents(schedule, { reminderMinutes = 15, academicCalendar }
     }
     c.meetings.forEach((m, i) => {
       const { start, end, recurrence } = buildRecurrence(m, termInfo);
-      const label2 = COMPONENT_LABEL[c.component] || "";
+      const comp = COMPONENT_LABEL[c.component] || "";
       events.push({
-        summary: `${c.subject} ${c.course}${label2 ? " " + label2 : ""}`,
+        summary: `${c.subject} ${c.course}${comp ? " " + comp : ""}`,
         location: m.location || undefined,
-        description: describe(c, m),
+        description: classDescription(c),
         start,
         end,
         recurrence,
         reminders,
         extendedProperties: { private: { ucscExport: `${slug}:${c.classNumber}:m${i}` } },
-        source: { title: "MyScheduler", url: "https://ucsc.collegescheduler.com/" },
+        source: SOURCE,
       });
     });
   }
 
-  return { termSlug: slug, termLabel: label, events, skipped };
+  const unresolvedFinals = [];
+  if (includeFinals) {
+    const termMatrix = finalExamMatrix?.[label];
+    for (const c of schedule.classes) {
+      if (c.component !== "LEC" || !c.meetings.length) continue;
+      const { matched } = resolveFinal(c, termMatrix);
+      if (!matched) {
+        unresolvedFinals.push(`${c.subject} ${c.course}`);
+        continue;
+      }
+      events.push({
+        summary: `${c.subject} ${c.course} Final Exam`,
+        location: matched.location || undefined,
+        description: finalDescription(c),
+        start: { dateTime: `${matched.examDate}T${matched.examStart}:00`, timeZone: tz },
+        end: { dateTime: `${matched.examDate}T${matched.examEnd}:00`, timeZone: tz },
+        reminders,
+        extendedProperties: { private: { ucscExport: `${slug}:${c.classNumber}:final` } },
+        source: SOURCE,
+      });
+    }
+  }
+
+  return {
+    termSlug: slug,
+    termLabel: label,
+    timezone: tz,
+    events,
+    skipped,
+    unresolvedFinals,
+  };
 }

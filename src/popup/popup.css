@@ -43,11 +43,28 @@ h1 { margin: 0; font-size: 15px; color: var(--accent); }
 .status:empty { display: none; }
 
 .classes { list-style: none; margin: 8px 0; padding: 0; }
-.cls { padding: 7px 0; border-top: 1px solid var(--line); }
+.cls {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+}
 .cls:first-child { border-top: 0; }
+.cls-check { margin-top: 2px; }
+.cls-check[hidden] { visibility: hidden; }
 .cls-head { font-weight: 600; }
 .cls-sub { margin-top: 2px; color: var(--muted); font-size: 12px; }
 .cls.excluded .cls-head, .cls.excluded .cls-sub { color: var(--skip); }
+.cls.unchecked .cls-head, .cls.unchecked .cls-sub { color: var(--skip); }
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 12px 0 4px;
+}
+.toggle span { font-size: 12px; }
 
 .rule { height: 1px; background: var(--line); margin: 12px 0; }
 

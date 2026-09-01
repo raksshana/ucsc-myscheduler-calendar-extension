@@ -1,13 +1,16 @@
 const $ = (sel) => document.querySelector(sel);
 const MYSCHEDULER_RE = /^https:\/\/ucsc\.collegescheduler\.com\//;
 const DEFAULT_REMINDER = 15;
+const NEW_CALENDAR = "__new__";
 
 const state = {
   schedule: null,
+  selected: new Set(), // classNumbers to export
   connected: false,
   calendars: [],
   exports: {},
   reminderMinutes: DEFAULT_REMINDER,
+  includeFinals: true,
 };
 
 const send = (message) => chrome.runtime.sendMessage(message);
@@ -21,6 +24,8 @@ function meetingLabel(m) {
 
 function renderSchedule(data) {
   state.schedule = data;
+  state.selected = new Set(data.classes.filter((c) => c.meetings.length).map((c) => c.classNumber));
+
   $("#status").textContent = "";
   $("#term").textContent = data.term?.label
     ? `${data.term.label} · ${data.classes.length} sections`
@@ -30,15 +35,29 @@ function renderSchedule(data) {
   list.replaceChildren();
   for (const c of data.classes) {
     const included = c.meetings.length > 0;
+
     const li = document.createElement("li");
     li.className = included ? "cls" : "cls excluded";
 
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.className = "cls-check";
+    check.checked = included;
+    check.hidden = !included;
+    check.dataset.cls = c.classNumber;
+    check.addEventListener("change", () => {
+      if (check.checked) state.selected.add(c.classNumber);
+      else state.selected.delete(c.classNumber);
+      li.classList.toggle("unchecked", !check.checked);
+      refreshExportButton();
+    });
+
+    const body = document.createElement("div");
     const head = document.createElement("div");
     head.className = "cls-head";
     head.textContent = [`${c.subject} ${c.course}-${c.section}`, c.title]
       .filter(Boolean)
       .join(" · ");
-
     const sub = document.createElement("div");
     sub.className = "cls-sub";
     sub.textContent = included
@@ -46,29 +65,36 @@ function renderSchedule(data) {
       : c.online
         ? "online / async — skipped"
         : "no meeting time — skipped";
+    body.append(head, sub);
 
-    li.append(head, sub);
+    li.append(check, body);
     list.append(li);
   }
 }
 
-function exportableCount() {
-  return (state.schedule?.classes || []).reduce((n, c) => n + c.meetings.length, 0);
+function selectedMeetingCount() {
+  return (state.schedule?.classes || [])
+    .filter((c) => state.selected.has(c.classNumber))
+    .reduce((n, c) => n + c.meetings.length, 0);
+}
+
+function filteredSchedule() {
+  return {
+    ...state.schedule,
+    classes: state.schedule.classes.filter((c) => state.selected.has(c.classNumber)),
+  };
 }
 
 // ---------- google calendar section ----------
 
 function renderGoogle() {
-  const section = $("#gcal");
-  section.hidden = !state.schedule;
-
-  const connectBtn = $("#connect");
-  const controls = $("#controls");
-  connectBtn.hidden = state.connected;
-  controls.hidden = !state.connected;
+  $("#gcal").hidden = !state.schedule;
+  $("#connect").hidden = state.connected;
+  $("#controls").hidden = !state.connected;
   if (!state.connected) return;
 
   const select = $("#calendar");
+  const prev = select.value;
   select.replaceChildren();
   for (const cal of state.calendars) {
     const opt = document.createElement("option");
@@ -76,15 +102,27 @@ function renderGoogle() {
     opt.textContent = cal.primary ? `${cal.summary} (primary)` : cal.summary;
     select.append(opt);
   }
+  const newOpt = document.createElement("option");
+  newOpt.value = NEW_CALENDAR;
+  newOpt.textContent = state.schedule?.term?.label
+    ? `＋ New calendar “UCSC ${state.schedule.term.label}”`
+    : "＋ New calendar";
+  select.append(newOpt);
+  if (prev) select.value = prev;
 
+  $("#includeFinals").checked = state.includeFinals;
   syncReminderChips();
-
-  const n = exportableCount();
-  const btn = $("#export");
-  btn.textContent = n ? `Export ${n} event${n === 1 ? "" : "s"} to Google Calendar` : "Nothing to export";
-  btn.disabled = !n;
-
+  refreshExportButton();
   renderUndo();
+}
+
+function refreshExportButton() {
+  const n = selectedMeetingCount();
+  const btn = $("#export");
+  btn.disabled = !n;
+  btn.textContent = !n
+    ? "Nothing selected"
+    : `Export ${n} event${n === 1 ? "" : "s"}${state.includeFinals ? " + finals" : ""}`;
 }
 
 function renderUndo() {
@@ -102,14 +140,10 @@ function renderUndo() {
 
 function syncReminderChips() {
   const chips = $("#reminders");
-  for (const b of chips.querySelectorAll("button")) {
-    b.classList.toggle("on", Number(b.dataset.min) === state.reminderMinutes);
-  }
-  const custom = $("#reminderCustom");
-  const isPreset = [...chips.querySelectorAll("button")].some(
-    (b) => Number(b.dataset.min) === state.reminderMinutes,
-  );
-  custom.value = isPreset ? "" : String(state.reminderMinutes);
+  const buttons = [...chips.querySelectorAll("button")];
+  for (const b of buttons) b.classList.toggle("on", Number(b.dataset.min) === state.reminderMinutes);
+  const isPreset = buttons.some((b) => Number(b.dataset.min) === state.reminderMinutes);
+  $("#reminderCustom").value = isPreset ? "" : String(state.reminderMinutes);
 }
 
 function setReminder(minutes) {
@@ -131,7 +165,6 @@ async function onConnect() {
     state.calendars = res.calendars || [];
     renderGoogle();
   } catch (e) {
-    // popup usually closes during consent; if it's still here, show why
     btn.disabled = false;
     btn.textContent = "Connect Google Calendar";
     setResult(String(e.message || e), "err");
@@ -146,22 +179,31 @@ async function onExport() {
     const res = await send({
       type: "GCAL_EXPORT",
       payload: {
-        schedule: state.schedule,
+        schedule: filteredSchedule(),
         calendarId: $("#calendar").value,
         reminderMinutes: state.reminderMinutes,
+        includeFinals: state.includeFinals,
       },
     });
     if (!res?.ok) throw new Error(res?.error || "Export failed");
 
-    state.exports[res.termSlug] = {
-      count: res.count,
-      calendarId: $("#calendar").value,
-      termLabel: res.termLabel,
-    };
-    const calName = state.calendars.find((c) => c.id === $("#calendar").value)?.summary || "your calendar";
-    const extra = res.skipped?.length ? ` ${res.skipped.length} skipped (online/async).` : "";
-    setResult(`Added ${res.count} event${res.count === 1 ? "" : "s"} to ${calName}.${extra}`, "ok");
-    renderUndo();
+    state.exports[res.termSlug] = { count: res.count, termLabel: res.termLabel };
+
+    if (res.createdCalendar) {
+      const st = await send({ type: "GCAL_STATE" });
+      if (st?.ok) state.calendars = st.calendars;
+    }
+    renderGoogle();
+
+    const target =
+      $("#calendar").value === NEW_CALENDAR
+        ? `“UCSC ${res.termLabel}”`
+        : state.calendars.find((c) => c.id === $("#calendar").value)?.summary || "your calendar";
+    let msg = `Added ${res.count} event${res.count === 1 ? "" : "s"} to ${target}.`;
+    if (res.skipped?.length) msg += ` ${res.skipped.length} online/async skipped.`;
+    if (res.unresolvedFinals?.length)
+      msg += ` No exam slot matched for ${res.unresolvedFinals.join(", ")} — add those finals manually.`;
+    setResult(msg, "ok");
   } catch (e) {
     setResult(String(e.message || e), "err");
   } finally {
@@ -208,6 +250,12 @@ $("#export").addEventListener("click", onExport);
 $("#undo").addEventListener("click", onUndo);
 $("#disconnect").addEventListener("click", onDisconnect);
 
+$("#includeFinals").addEventListener("change", (e) => {
+  state.includeFinals = e.target.checked;
+  chrome.storage.sync.set({ includeFinals: state.includeFinals });
+  refreshExportButton();
+});
+
 $("#reminders").addEventListener("click", (e) => {
   const b = e.target.closest("button[data-min]");
   if (b) setReminder(Number(b.dataset.min));
@@ -235,8 +283,9 @@ async function main() {
     return;
   }
 
-  const { defaultReminder } = await chrome.storage.sync.get("defaultReminder");
-  if (typeof defaultReminder === "number") state.reminderMinutes = defaultReminder;
+  const prefs = await chrome.storage.sync.get(["defaultReminder", "includeFinals"]);
+  if (typeof prefs.defaultReminder === "number") state.reminderMinutes = prefs.defaultReminder;
+  if (typeof prefs.includeFinals === "boolean") state.includeFinals = prefs.includeFinals;
 
   let data;
   try {

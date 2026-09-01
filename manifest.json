@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "UCSC Schedule → Google Calendar",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Export your UCSC class schedule to Google Calendar as recurring weekly events, one click.",
   "icons": {
     "16": "icons/icon16.png",
@@ -27,7 +27,8 @@
     "client_id": "713570157767-nk0vlt4ovqrt1b7k6lqc2iv0q5n82knn.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/calendar.events",
-      "https://www.googleapis.com/auth/calendar.calendarlist.readonly"
+      "https://www.googleapis.com/auth/calendar.calendarlist.readonly",
+      "https://www.googleapis.com/auth/calendar.app.created"
     ]
   },
   "content_scripts": [

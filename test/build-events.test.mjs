@@ -8,6 +8,9 @@ import { buildEvents } from "../src/lib/build-events.mjs";
 const academicCalendar = JSON.parse(
   readFileSync(new URL("../src/lib/datasets/academic-calendar.json", import.meta.url)),
 );
+const finalExamMatrix = JSON.parse(
+  readFileSync(new URL("../src/lib/datasets/final-exam-matrix.json", import.meta.url)),
+);
 const schedule = parseScheduleDoc(
   new JSDOM(
     readFileSync(new URL("../data/fixtures/MyScheduler.html", import.meta.url), "utf8"),
@@ -48,4 +51,37 @@ test("buildEvents — reminderMinutes 0 disables overrides", () => {
 test("buildEvents — unknown term throws", () => {
   const bad = { ...schedule, term: { label: "Fall 2099", quarter: "Fall", year: 2099 } };
   assert.throws(() => buildEvents(bad, { academicCalendar }), /No academic-calendar data/);
+});
+
+test("buildEvents — includeFinals adds one exam event per matched lecture", () => {
+  const { events, unresolvedFinals } = buildEvents(schedule, {
+    reminderMinutes: 15,
+    academicCalendar,
+    finalExamMatrix,
+    includeFinals: true,
+  });
+
+  assert.deepEqual(unresolvedFinals, []); // MUSC 11C has no meetings -> not listed
+  const finals = events.filter((e) => e.summary.endsWith("Final Exam"));
+  assert.equal(finals.length, 2);
+
+  const cse = finals.find((e) => e.summary === "CSE 101 Final Exam");
+  assert.equal(cse.start.dateTime, "2026-12-10T08:00:00"); // MWF 4:00pm slot
+  assert.equal(cse.end.dateTime, "2026-12-10T11:00:00");
+  assert.equal(cse.start.timeZone, "America/Los_Angeles");
+  assert.equal(cse.location, "Kresge Acad 3105");
+  assert.ok(!cse.recurrence);
+  assert.equal(cse.extendedProperties.private.ucscExport, "fall2026:11881:final");
+
+  const phys = finals.find((e) => e.summary === "PHYS 5C Final Exam");
+  assert.equal(phys.start.dateTime, "2026-12-08T16:00:00"); // MWF 10:40am slot
+});
+
+test("buildEvents — includeFinals off adds no exam events", () => {
+  const { events } = buildEvents(schedule, {
+    academicCalendar,
+    finalExamMatrix,
+    includeFinals: false,
+  });
+  assert.ok(!events.some((e) => e.summary.endsWith("Final Exam")));
 });
