@@ -110,6 +110,7 @@ async function handle(msg) {
           eventIds: created,
           count: created.length,
           termLabel: built.termLabel,
+          firstDate: built.firstDate,
           when: Date.now(),
         };
         await set({ exports: exportsMap, progress: null });
@@ -126,6 +127,7 @@ async function handle(msg) {
           createdCalendar,
           termSlug: built.termSlug,
           termLabel: built.termLabel,
+          firstDate: built.firstDate,
         };
       });
     }

@@ -135,9 +135,24 @@ function renderUndo() {
     undo.hidden = false;
     undo.textContent = `Undo last export (${rec.count})`;
     undo.dataset.slug = slug;
+    showOpenCal(rec.firstDate);
   } else {
     undo.hidden = true;
+    showOpenCal(null);
   }
+}
+
+const GCAL_BASE = "https://calendar.google.com/calendar/u/0/r";
+
+function showOpenCal(firstDate) {
+  const a = $("#openCal");
+  if (!firstDate) {
+    a.hidden = true;
+    return;
+  }
+  const [y, m, d] = firstDate.split("-").map(Number);
+  a.href = `${GCAL_BASE}/week/${y}/${m}/${d}`;
+  a.hidden = false;
 }
 
 function syncReminderChips() {
@@ -189,7 +204,11 @@ async function onExport() {
     });
     if (!res?.ok) throw new Error(res?.error || "Export failed");
 
-    state.exports[res.termSlug] = { count: res.count, termLabel: res.termLabel };
+    state.exports[res.termSlug] = {
+      count: res.count,
+      termLabel: res.termLabel,
+      firstDate: res.firstDate,
+    };
 
     if (res.createdCalendar) {
       const st = await send({ type: "GCAL_STATE" });

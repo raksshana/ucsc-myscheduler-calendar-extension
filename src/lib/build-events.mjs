@@ -128,10 +128,15 @@ export function buildEvents(
     }
   }
 
+  const firstDate = events.length
+    ? events.map((e) => e.start.dateTime.slice(0, 10)).sort()[0]
+    : null;
+
   return {
     termSlug: slug,
     termLabel: label,
     timezone: tz,
+    firstDate,
     events,
     skipped,
     unresolvedFinals,
