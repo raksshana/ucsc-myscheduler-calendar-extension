@@ -15,12 +15,37 @@
     <p id="status" class="status">Reading schedule…</p>
     <ul id="classes" class="classes"></ul>
 
-    <footer>
-      <button id="export" type="button" disabled>
-        Export to Google Calendar
-      </button>
-      <p class="hint">Phase&nbsp;0 preview — parser only. Export lands in the next phase.</p>
-    </footer>
+    <section id="gcal" class="gcal" hidden>
+      <div class="rule"></div>
+
+      <button id="connect" type="button" hidden>Connect Google Calendar</button>
+
+      <div id="controls" hidden>
+        <label class="field">
+          <span>Calendar</span>
+          <select id="calendar"></select>
+        </label>
+
+        <div class="field">
+          <span>Reminder</span>
+          <div id="reminders" class="chips">
+            <button type="button" data-min="0">None</button>
+            <button type="button" data-min="10">10m</button>
+            <button type="button" data-min="15">15m</button>
+            <button type="button" data-min="30">30m</button>
+            <button type="button" data-min="60">1h</button>
+            <input id="reminderCustom" type="number" min="0" max="40320" step="5" placeholder="min" />
+          </div>
+        </div>
+
+        <button id="export" type="button" class="primary">Export to Google Calendar</button>
+        <p id="result" class="result"></p>
+        <div class="foot">
+          <button id="undo" type="button" class="link" hidden></button>
+          <button id="disconnect" type="button" class="link">Disconnect</button>
+        </div>
+      </div>
+    </section>
 
     <script type="module" src="popup.js"></script>
   </body>

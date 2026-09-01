@@ -70,11 +70,14 @@ test/parse.test.mjs
 ## Phases
 
 - **P0 — scaffold + parser.** ✅ MyScheduler parser + fixture test, datasets build,
-  popup that lists detected sections (export disabled).
-- **P1 — Google export.** OAuth (`identity`), calendar picker, reminder UI, term
-  dates + holiday EXDATEs, batched recurring `events.insert`.
-- **P2 — finals.** Matrix resolver, exam events, "add manually" list for
-  unresolved classes, undo last export.
+  popup that lists detected sections.
+- **P1 — Google export.** ✅ `getAuthToken` OAuth (Chrome-extension client), writable-
+  calendar picker, reminder-minutes UI, recurrence builder (RRULE + holiday
+  EXDATEs), sequential `events.insert` in the service worker, deterministic
+  `iCalUID` + stored event IDs for re-export/undo.
+- **P2 — finals + create-calendar.** Matrix resolver, exam events, "add manually"
+  list for unresolved classes, "Create new calendar…" option (needs
+  `calendar.app.created` scope), class-selection checkboxes.
 - **P3 — MyUCSC portal.** Second parser: instructor names, real per-section
   start/end dates, explicit final-exam group when present.
 - **P4 — release.** Per-course colors, options page, privacy policy, OAuth

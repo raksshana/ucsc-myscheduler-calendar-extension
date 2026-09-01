@@ -1,0 +1,49 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { JSDOM } from "jsdom";
+import { parseScheduleDoc } from "../src/lib/schedule-parse.mjs";
+import { buildEvents } from "../src/lib/build-events.mjs";
+
+const academicCalendar = JSON.parse(
+  readFileSync(new URL("../src/lib/datasets/academic-calendar.json", import.meta.url)),
+);
+const schedule = parseScheduleDoc(
+  new JSDOM(
+    readFileSync(new URL("../data/fixtures/MyScheduler.html", import.meta.url), "utf8"),
+  ).window.document,
+);
+
+test("buildEvents — fixture yields 4 events, MUSC 11C skipped", () => {
+  const { events, skipped, termSlug, termLabel } = buildEvents(schedule, {
+    reminderMinutes: 15,
+    academicCalendar,
+  });
+
+  assert.equal(termSlug, "fall2026");
+  assert.equal(termLabel, "Fall 2026");
+  assert.equal(events.length, 4);
+  assert.deepEqual(skipped, ["MUSC 11C-01"]);
+
+  const cse = events.find((e) => e.iCalUID === "ucsc-fall2026-11881-m0");
+  assert.equal(cse.summary, "CSE 101 Lecture");
+  assert.equal(cse.location, "Kresge Acad 3105");
+  assert.equal(cse.start.dateTime, "2026-09-25T16:00:00");
+  assert.equal(cse.start.timeZone, "America/Los_Angeles");
+  assert.equal(cse.reminders.overrides[0].minutes, 15);
+  assert.match(cse.recurrence[0], /^RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR/);
+  assert.match(cse.description, /Class #11881/);
+
+  assert.ok(events.find((e) => e.summary === "PHYS 5N Lab"));
+  assert.ok(events.find((e) => e.summary === "CSE 101 Section"));
+});
+
+test("buildEvents — reminderMinutes 0 disables overrides", () => {
+  const { events } = buildEvents(schedule, { reminderMinutes: 0, academicCalendar });
+  assert.deepEqual(events[0].reminders, { useDefault: false, overrides: [] });
+});
+
+test("buildEvents — unknown term throws", () => {
+  const bad = { ...schedule, term: { label: "Fall 2099", quarter: "Fall", year: 2099 } };
+  assert.throws(() => buildEvents(bad, { academicCalendar }), /No academic-calendar data/);
+});
