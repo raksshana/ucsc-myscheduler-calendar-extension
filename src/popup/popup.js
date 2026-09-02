@@ -293,6 +293,8 @@ async function onDownloadIcs() {
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
 
+    for (const el of document.querySelectorAll(".ics-name")) el.textContent = a.download;
+
     let msg = `Downloaded ${a.download} — ${built.events.length} event${
       built.events.length === 1 ? "" : "s"
     }. Follow the steps above to import it.`;
@@ -405,7 +407,7 @@ async function main() {
     return;
   }
   if (!data?.ok) {
-    status.textContent = "Couldn’t find a class schedule on this page.";
+    status.textContent = "";
     $("#help").hidden = false;
     return;
   }
