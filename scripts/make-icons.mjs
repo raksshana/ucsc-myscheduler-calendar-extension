@@ -1,5 +1,5 @@
 /**
- * Regenerate icons/icon{16,48,128}.png from icons/iconslug.jpg.
+ * Regenerate icons/icon{16,48,128}.png from icons/iconslugai.png.
  * Uses macOS `sips` (built in). Run: npm run icons
  */
 import { execFileSync } from "node:child_process";
@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "icons");
-const src = path.join(dir, "iconslug.jpg");
+const src = path.join(dir, "iconslugai.png");
 
 for (const size of [16, 48, 128]) {
   execFileSync("sips", [
@@ -17,4 +17,4 @@ for (const size of [16, 48, 128]) {
     "--out", path.join(dir, `icon${size}.png`),
   ]);
 }
-console.log("wrote icons/icon{16,48,128}.png from iconslug.jpg");
+console.log("wrote icons/icon{16,48,128}.png from iconslugai.png");
