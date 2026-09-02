@@ -401,7 +401,7 @@ async function main() {
   }
   if (data?.reason === "myucsc-not-list-view") {
     status.textContent =
-      "You’re on the Weekly Calendar View. Set Display Option to List View near the top of the page, then reopen the popup.";
+      "You’re on the Weekly Calendar View. Set “Display Option” to List View near the top of the page, then reopen this popup.";
     return;
   }
   if (!data?.ok) {
