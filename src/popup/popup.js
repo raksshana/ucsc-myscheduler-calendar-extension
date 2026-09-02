@@ -399,6 +399,11 @@ async function main() {
   } catch {
     data = null;
   }
+  if (data?.reason === "myucsc-not-list-view") {
+    status.textContent =
+      "You’re on the Weekly Calendar View. Set “Select Display Option” to List View near the top of the page, then reopen this popup.";
+    return;
+  }
   if (!data?.ok) {
     status.textContent = "Couldn’t find a class schedule on this page.";
     $("#help").hidden = false;
