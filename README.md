@@ -1,7 +1,7 @@
 # UCSC Schedule Exporter
 
 Chrome extension that turns a UC Santa Cruz class schedule into calendar events —
-one click to Google Calendar, or a downloadable `.ics` file for Apple Calendar.
+one click to Google Calendar, or a downloadable `.ics` file for Apple Calendar and Google Calendar.
 
 ## What it does
 
