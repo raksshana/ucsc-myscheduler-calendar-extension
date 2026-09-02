@@ -295,7 +295,7 @@ async function onDownloadIcs() {
 
     let msg = `Downloaded ${a.download} — ${built.events.length} event${
       built.events.length === 1 ? "" : "s"
-    }. Import it in Apple Calendar (File → Import) or Google Calendar (Settings → Import & export).`;
+    }. Follow the steps above to import it.`;
     if (built.unresolvedFinals?.length)
       msg += ` No exam slot matched for ${built.unresolvedFinals.join(", ")}.`;
     setResult(msg, "ok");

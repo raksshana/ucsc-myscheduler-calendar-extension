@@ -78,10 +78,24 @@
       <div id="panel-ics" class="panel" hidden>
         <p class="panel-note">Apple Calendar + Google Calendar support</p>
         <button id="downloadIcs" type="button" class="primary">Download .ics file</button>
-        <p class="hint">
-          Then import it — Apple Calendar: File → Import. Google Calendar:
-          Settings → Import &amp; export.
-        </p>
+
+        <div class="howto">
+          <p class="howto-title">Then, in Google Calendar</p>
+          <ol>
+            <li>Open <strong>Settings → Import &amp; export</strong>.</li>
+            <li>Click <strong>Select file from your computer</strong> and choose the downloaded <strong>ucsc-*.ics</strong>.</li>
+            <li>Pick the destination calendar, then click <strong>Import</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="howto">
+          <p class="howto-title">Then, in Apple Calendar</p>
+          <ol>
+            <li>Open the <strong>Calendar</strong> app.</li>
+            <li>Choose <strong>File → Import…</strong> and select the downloaded <strong>ucsc-*.ics</strong>.</li>
+            <li>Pick the calendar to add the events to, then click <strong>Import</strong>.</li>
+          </ol>
+        </div>
       </div>
 
       <p id="result" class="result"></p>
