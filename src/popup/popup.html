@@ -52,6 +52,10 @@
       </p>
     </div>
 
+    <div id="classes-head" class="classes-head" hidden>
+      <span id="sel-count"></span>
+      <button id="sel-toggle" type="button" class="link"></button>
+    </div>
     <ul id="classes" class="classes"></ul>
 
     <section id="exporter" hidden>
@@ -65,7 +69,19 @@
       </div>
 
       <div class="field">
-        <span>Reminder</span>
+        <span class="field-label">
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 2.2a3.6 3.6 0 0 0-3.6 3.6c0 3-1.2 4-1.6 4.4h10.4c-.4-.4-1.6-1.4-1.6-4.4A3.6 3.6 0 0 0 8 2.2ZM6.7 12.6a1.4 1.4 0 0 0 2.6 0"
+            />
+          </svg>
+          Reminder before class
+        </span>
         <div id="reminders" class="chips">
           <button type="button" data-min="0">None</button>
           <button type="button" data-min="10">10m</button>
@@ -102,23 +118,25 @@
         <p class="panel-note">Apple Calendar + Google Calendar support</p>
         <button id="downloadIcs" type="button" class="primary">Download .ics file</button>
 
-        <div class="howto">
-          <p class="howto-title">Then, in Google Calendar</p>
+        <p class="howto-heading">After downloading</p>
+
+        <details class="accordion">
+          <summary>Import to Google Calendar</summary>
           <ol>
             <li>Open <strong>Settings → Import &amp; export</strong>.</li>
-            <li>Click <strong>Select file from your computer</strong> and choose <strong class="ics-name">the downloaded .ics file</strong> from your Downloads.</li>
-            <li>Pick the destination calendar, then click <strong>Import</strong>.</li>
+            <li>Select <strong class="ics-name">the downloaded .ics file</strong>.</li>
+            <li>Pick a calendar, then <strong>Import</strong>.</li>
           </ol>
-        </div>
+        </details>
 
-        <div class="howto">
-          <p class="howto-title">Then, in Apple Calendar</p>
+        <details class="accordion">
+          <summary>Import to Apple Calendar</summary>
           <ol>
             <li>Open the <strong>Calendar</strong> app.</li>
-            <li>Choose <strong>File → Import…</strong> and select <strong class="ics-name">the downloaded .ics file</strong> from your Downloads.</li>
-            <li>Pick the calendar to add the events to, then click <strong>Import</strong>.</li>
+            <li><strong>File → Import…</strong> and select <strong class="ics-name">the downloaded .ics file</strong>.</li>
+            <li>Choose the destination calendar.</li>
           </ol>
-        </div>
+        </details>
       </div>
 
       <p id="result" class="result"></p>

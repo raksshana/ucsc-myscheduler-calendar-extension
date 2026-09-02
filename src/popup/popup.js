@@ -31,64 +31,164 @@ const slugFor = (t) => `${t.quarter}${t.year}`.toLowerCase();
 
 // ---------- schedule list ----------
 
-function meetingLabel(m) {
-  return `${m.days.join("")} ${m.start}–${m.end} · ${m.location || "—"}`;
+const COURSE_COLORS = [
+  "#22a06b",
+  "#e5574e",
+  "#c9a227",
+  "#3b82f6",
+  "#8b5cf6",
+  "#14b8a6",
+  "#ec4899",
+  "#f97316",
+];
+
+const COMPONENT_LABEL = {
+  LEC: "Lecture",
+  DISC: "Discussion",
+  LAB: "Lab",
+  SEC: "Section",
+  SEM: "Seminar",
+  STU: "Studio",
+};
+
+function colorFor(key, map) {
+  if (!(key in map)) map[key] = COURSE_COLORS[Object.keys(map).length % COURSE_COLORS.length];
+  return map[key];
+}
+
+function fmt12(hhmm) {
+  let [h, m] = hhmm.split(":").map(Number);
+  const ap = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return { t: `${h}:${String(m).padStart(2, "0")}`, ap };
+}
+
+function timeRange(m) {
+  const a = fmt12(m.start);
+  const b = fmt12(m.end);
+  return a.ap === b.ap ? `${a.t}–${b.t} ${b.ap}` : `${a.t} ${a.ap} – ${b.t} ${b.ap}`;
+}
+
+function meetingLine(m) {
+  return `${timeRange(m)}${m.location ? "  ·  " + m.location : ""}`;
 }
 
 function renderSchedule(data) {
   state.schedule = data;
-  state.selected = new Set(data.classes.filter((c) => c.meetings.length).map((c) => c.classNumber));
+  state.selected = new Set(
+    data.classes.filter((c) => c.meetings.length).map((c) => c.classNumber),
+  );
 
   $("#status").textContent = "";
-  $("#term").textContent = data.term?.label
-    ? `${data.term.label} · ${data.classes.length} sections`
-    : `${data.classes.length} sections`;
+  $("#term").textContent = data.term?.label || "";
 
+  const colorMap = {};
   const list = $("#classes");
   list.replaceChildren();
+
   for (const c of data.classes) {
-    const included = c.meetings.length > 0;
+    const selectable = c.meetings.length > 0;
 
     const li = document.createElement("li");
-    li.className = included ? "cls" : "cls excluded";
+    li.className = "cls";
+    li.dataset.cls = c.classNumber;
+    if (!selectable) li.classList.add("excluded");
 
-    if (included) {
+    const bar = document.createElement("span");
+    bar.className = "cls-bar";
+    bar.style.background = colorFor(`${c.subject} ${c.course}`, colorMap);
+
+    const body = document.createElement("div");
+    body.className = "cls-body";
+
+    const line1 = document.createElement("div");
+    line1.className = "cls-line1";
+    const code = document.createElement("span");
+    code.className = "cls-code";
+    code.textContent = `${c.subject} ${c.course}-${c.section}`;
+    line1.append(code);
+
+    const badgeText =
+      !selectable && c.online
+        ? "Online Asynchronous"
+        : COMPONENT_LABEL[c.component] || c.component || "";
+    if (badgeText) {
+      const badge = document.createElement("span");
+      badge.className = "cls-badge";
+      badge.textContent = badgeText;
+      line1.append(badge);
+    }
+
+    const title = document.createElement("div");
+    title.className = "cls-title";
+    title.textContent = c.title || "";
+
+    const meta = document.createElement("div");
+    meta.className = "cls-meta";
+    meta.textContent = selectable
+      ? c.meetings.map(meetingLine).join("     ·     ")
+      : c.online
+        ? "no meeting pattern"
+        : "no meeting time";
+
+    body.append(line1);
+    if (c.title) body.append(title);
+    body.append(meta);
+
+    li.append(bar, body);
+
+    if (selectable) {
       const check = document.createElement("input");
       check.type = "checkbox";
       check.className = "cls-check";
-      check.checked = true;
-      check.dataset.cls = c.classNumber;
+      check.checked = state.selected.has(c.classNumber);
       check.addEventListener("change", () => {
         if (check.checked) state.selected.add(c.classNumber);
         else state.selected.delete(c.classNumber);
         li.classList.toggle("unchecked", !check.checked);
+        renderSelCount();
         refreshButtons();
       });
       li.append(check);
     }
 
-    const body = document.createElement("div");
-    const head = document.createElement("div");
-    head.className = "cls-head";
-    head.textContent = [`${c.subject} ${c.course}-${c.section}`, c.title]
-      .filter(Boolean)
-      .join(" · ");
-    const sub = document.createElement("div");
-    sub.className = "cls-sub";
-    sub.textContent = included
-      ? c.meetings.map(meetingLabel).join("   |   ")
-      : c.online
-        ? "online / async — skipped"
-        : "no meeting time — skipped";
-    body.append(head, sub);
-
-    li.append(body);
     list.append(li);
   }
 
+  renderSelCount();
   $("#exporter").hidden = false;
   renderOptions();
   renderTabs();
+}
+
+function selectableClasses() {
+  return (state.schedule?.classes || []).filter((c) => c.meetings.length);
+}
+
+function renderSelCount() {
+  const total = selectableClasses().length;
+  const n = state.selected.size;
+  $("#sel-count").textContent = `Classes · ${n} of ${total} selected`;
+  $("#classes-head").hidden = total === 0;
+
+  const btn = $("#sel-toggle");
+  const allOn = n >= total && total > 0;
+  btn.textContent = allOn ? "Clear all" : "Select all";
+  btn.dataset.act = allOn ? "clear" : "all";
+}
+
+function applySelectAll(select) {
+  state.selected = select
+    ? new Set(selectableClasses().map((c) => c.classNumber))
+    : new Set();
+  for (const li of document.querySelectorAll("#classes .cls")) {
+    const cb = li.querySelector(".cls-check");
+    if (!cb) continue;
+    cb.checked = state.selected.has(li.dataset.cls);
+    li.classList.toggle("unchecked", !cb.checked);
+  }
+  renderSelCount();
+  refreshButtons();
 }
 
 function renderOptions() {
@@ -346,6 +446,7 @@ for (const btn of document.querySelectorAll(".tab")) {
   btn.addEventListener("click", () => setTab(btn.dataset.tab));
 }
 
+$("#sel-toggle").addEventListener("click", (e) => applySelectAll(e.target.dataset.act === "all"));
 $("#connect").addEventListener("click", onConnect);
 $("#export").addEventListener("click", onExport);
 $("#downloadIcs").addEventListener("click", onDownloadIcs);
