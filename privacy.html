@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — UCSC Schedule Exporter</title>
+    <style>
+      :root {
+        --maroon: #7c2529;
+        --green: #13361c;
+        --ink: #1c1c1c;
+        --muted: #5b5b5b;
+        --line: #e5e2dd;
+        --bg: #fbfaf7;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+      header { background: var(--green); color: #fff; padding: 32px 0; }
+      header h1 { margin: 0; font-size: 22px; }
+      header p { margin: 4px 0 0; color: #cfe0d3; font-size: 14px; }
+      main { padding: 32px 0 60px; }
+      h2 { font-size: 17px; color: var(--maroon); margin: 28px 0 8px; }
+      p { margin: 0 0 12px; }
+      ul { margin: 0 0 12px; padding-left: 22px; }
+      li { margin: 5px 0; }
+      code { background: #f0eee9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+      table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 6px 0 12px; }
+      th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); }
+      a { color: var(--maroon); }
+      .lead { font-size: 15px; }
+      .back { display: inline-block; margin-top: 8px; font-size: 14px; }
+      footer { border-top: 1px solid var(--line); padding: 20px 0 40px; color: var(--muted); font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Privacy Policy — UCSC Schedule Exporter</h1>
+        <p>Last updated: September 3, 2026</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <p class="lead">
+        UCSC Schedule Exporter (“the extension”) is a Chrome extension that turns a
+        UC&nbsp;Santa&nbsp;Cruz student’s class schedule into calendar events. This
+        policy explains exactly what it does with your information. The short
+        version: <strong>the developer never receives any of your data.</strong>
+        There is no server, no account, no analytics, and no tracking.
+      </p>
+
+      <h2>What the extension reads</h2>
+      <p>
+        When you open the extension on one of these two pages, it reads the class
+        schedule shown on that page:
+      </p>
+      <ul>
+        <li><strong>MyUCSC</strong> — <code>my.ucsc.edu</code> (Enrollment → Class Schedule)</li>
+        <li><strong>MyScheduler</strong> — <code>ucsc.collegescheduler.com</code> (the “Potential Schedule” page)</li>
+      </ul>
+      <p>
+        From that page it parses: course names and numbers, section numbers,
+        meeting days and times, room/location, instructor names, enrollment status,
+        and the term’s start and end dates. It does not read anything else on the
+        page, and it does not run on any other website.
+      </p>
+      <p>
+        All parsing happens <strong>locally in your browser</strong>. This data is
+        not sent anywhere by the extension except as described under “Google
+        Calendar” below.
+      </p>
+
+      <h2>Google Calendar (optional — only if you use the one-click export)</h2>
+      <p>If you choose <strong>“One-click Google”</strong> and sign in:</p>
+      <ul>
+        <li>
+          The extension uses Google’s OAuth to obtain an access token. Chrome
+          stores and refreshes this token; the extension does not copy it anywhere
+          else.
+        </li>
+        <li>
+          Using that token, the extension calls the Google Calendar API
+          (<code>googleapis.com</code>) to list the calendars you can write to (so
+          you can pick one) and to create the class and final-exam events you
+          selected.
+        </li>
+        <li>
+          It only creates and deletes events that it made itself (it records their
+          IDs so the “Undo last export” button can remove them).
+          <strong>It does not read, modify, or delete your existing calendar
+          events.</strong>
+        </li>
+        <li>
+          This data goes only to Google, under your own Google account. It is
+          governed by
+          <a href="https://policies.google.com/privacy">Google’s Privacy Policy</a>.
+        </li>
+      </ul>
+      <p>Requested scopes:</p>
+      <table>
+        <tr><th>Scope</th><th>Why</th></tr>
+        <tr>
+          <td><code>calendar.calendarlist.readonly</code></td>
+          <td>Show the list of calendars you can pick as the destination.</td>
+        </tr>
+        <tr>
+          <td><code>calendar.events</code></td>
+          <td>Create the class/exam events you asked for (and delete them on Undo).</td>
+        </tr>
+        <tr>
+          <td><code>calendar.app.created</code></td>
+          <td>Create a new calendar if you choose “＋ New calendar”.</td>
+        </tr>
+      </table>
+
+      <h2>.ics download (the other export option)</h2>
+      <p>
+        The <strong>“Download .ics”</strong> option builds the calendar file
+        entirely in your browser and saves it to your computer. Nothing is
+        transmitted. You then import that file into Apple Calendar, Google
+        Calendar, or any other calendar app yourself.
+      </p>
+
+      <h2>What the extension stores</h2>
+      <p>
+        Using Chrome’s extension storage (which Chrome may sync to your Google
+        account if you have Chrome Sync enabled), the extension keeps:
+      </p>
+      <ul>
+        <li>your reminder-time preference and which export tab you last used;</li>
+        <li>whether “Add final-exam events” is checked;</li>
+        <li>
+          the IDs (and destination calendar) of events it created, so “Undo last
+          export” can remove them.
+        </li>
+      </ul>
+      <p>It does <strong>not</strong> store the contents of your schedule.</p>
+
+      <h2>What is never done</h2>
+      <ul>
+        <li>No data is sent to the developer or any third party.</li>
+        <li>No analytics, telemetry, advertising, or fingerprinting.</li>
+        <li>Nothing is sold or shared.</li>
+        <li>No data is used for creditworthiness or lending.</li>
+      </ul>
+
+      <h2>Revoking access</h2>
+      <ul>
+        <li>Click <strong>“Sign out of Google”</strong> in the extension, or</li>
+        <li>
+          Remove it at
+          <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.
+        </li>
+      </ul>
+      <p>Uninstalling the extension removes everything it stored locally.</p>
+
+      <h2>Children</h2>
+      <p>
+        The extension is intended for UC Santa Cruz students and is not directed to
+        children under 13.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        Updates to this policy will be posted here with a new “Last updated” date.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions: open an issue at
+        <a href="https://github.com/raksshana/ucsc-myscheduler-calendar-extension/issues"
+          >github.com/raksshana/ucsc-myscheduler-calendar-extension/issues</a
+        >
+        or email
+        <a href="mailto:raksshana.hb21@gmail.com">raksshana.hb21@gmail.com</a>.
+      </p>
+
+      <a class="back" href="index.html">← Back to home</a>
+    </main>
+
+    <footer class="wrap">UCSC Schedule Exporter — a free tool for UC Santa Cruz students.</footer>
+  </body>
+</html>

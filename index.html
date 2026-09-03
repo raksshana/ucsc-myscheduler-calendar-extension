@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UCSC Schedule Exporter</title>
+    <meta
+      name="description"
+      content="A Chrome extension that exports a UC Santa Cruz class schedule to Google Calendar or a downloadable .ics file."
+    />
+    <style>
+      :root {
+        --maroon: #7c2529;
+        --green: #13361c;
+        --gold: #eaab00;
+        --ink: #1c1c1c;
+        --muted: #5b5b5b;
+        --line: #e5e2dd;
+        --bg: #fbfaf7;
+        --card: #ffffff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+      header {
+        background: var(--green);
+        color: #fff;
+        padding: 40px 0 34px;
+      }
+      header .wrap { display: flex; align-items: center; gap: 16px; }
+      header img { width: 56px; height: 56px; border-radius: 12px; }
+      header h1 { margin: 0; font-size: 24px; }
+      header p { margin: 4px 0 0; color: #cfe0d3; font-size: 15px; }
+      main { padding: 36px 0 60px; }
+      section { margin: 0 0 34px; }
+      h2 {
+        font-size: 18px;
+        margin: 0 0 10px;
+        color: var(--maroon);
+      }
+      p { margin: 0 0 12px; }
+      ul { margin: 0 0 12px; padding-left: 22px; }
+      li { margin: 5px 0; }
+      code {
+        background: #f0eee9;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 20px;
+      }
+      table { border-collapse: collapse; width: 100%; font-size: 14px; }
+      th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); font-weight: 600; }
+      a { color: var(--maroon); }
+      .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+      .btn {
+        display: inline-block;
+        padding: 9px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .btn-primary { background: var(--maroon); color: #fff; }
+      .btn-ghost { border: 1px solid var(--line); color: var(--ink); }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 24px 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <img src="icons/icon128.png" alt="UCSC Schedule Exporter icon" />
+        <div>
+          <h1>UCSC Schedule Exporter</h1>
+          <p>Your UC Santa Cruz class schedule → Google Calendar, in one click.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section>
+        <p>
+          UCSC Schedule Exporter is a free Chrome extension for UC&nbsp;Santa&nbsp;Cruz
+          students. It reads the class schedule shown on the two official UCSC
+          scheduling pages and turns it into calendar events — either added directly
+          to your Google&nbsp;Calendar, or saved as a standard <code>.ics</code> file
+          you import yourself into Apple&nbsp;Calendar or Google&nbsp;Calendar.
+        </p>
+        <div class="btns">
+          <a class="btn btn-primary" href="privacy.html">Privacy policy</a>
+          <a
+            class="btn btn-ghost"
+            href="https://github.com/raksshana/ucsc-myscheduler-calendar-extension"
+            >Source code</a
+          >
+        </div>
+      </section>
+
+      <section>
+        <h2>What it does</h2>
+        <p>
+          Open your schedule on <strong>MyUCSC</strong>
+          (<code>my.ucsc.edu</code> → Enrollment → Class Schedule, List View) or on
+          <strong>MyScheduler</strong> (<code>ucsc.collegescheduler.com</code>, the
+          “Potential Schedule” page), then click the extension icon. The popup:
+        </p>
+        <ul>
+          <li>
+            lists every class it found — course, section, meeting days and times,
+            and room — each with a checkbox so you choose exactly what to export;
+          </li>
+          <li>
+            <strong>One-click Google Calendar:</strong> after you sign in, creates
+            one recurring weekly event per class (running until the last day of
+            instruction, skipping campus holidays), on a calendar you pick or a new
+            one it makes;
+          </li>
+          <li>
+            <strong>Download .ics:</strong> builds a calendar file entirely in your
+            browser and downloads it — no sign-in, nothing sent anywhere;
+          </li>
+          <li>
+            adds a reminder you choose (none / 10 / 15 / 30 / 60 minutes, or a
+            custom value) to every event;
+          </li>
+          <li>
+            optionally adds a <strong>final-exam event</strong> for each class,
+            placed from the UCSC Registrar’s final examination schedule;
+          </li>
+          <li>
+            offers <strong>Undo last export</strong>, which removes exactly the
+            events the last run created.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Why it asks for Google Calendar access</h2>
+        <p>
+          Google access is used <strong>only</strong> if you choose the one-click
+          option. When you do, the extension requests these scopes:
+        </p>
+        <div class="card">
+          <table>
+            <tr>
+              <th>Scope</th>
+              <th>Purpose</th>
+            </tr>
+            <tr>
+              <td><code>calendar.events</code></td>
+              <td>Create the class and final-exam events you selected (and delete them if you click Undo).</td>
+            </tr>
+            <tr>
+              <td><code>calendar.calendarlist.readonly</code></td>
+              <td>Show the list of calendars you can write to, so you can pick a destination.</td>
+            </tr>
+            <tr>
+              <td><code>calendar.app.created</code></td>
+              <td>Create a new calendar if you choose the “＋ New calendar” option.</td>
+            </tr>
+          </table>
+        </div>
+        <p style="margin-top: 12px">
+          The extension only creates and deletes events it made itself. It never
+          reads, changes, or deletes your existing calendar events. All schedule
+          parsing and <code>.ics</code> generation happen locally in your browser.
+          Nothing is ever sent to the developer — there is no server, no account,
+          no analytics, and no tracking. Full details are in the
+          <a href="privacy.html">privacy policy</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>Install</h2>
+        <p>
+          The extension is being published on the Chrome Web Store. Until it is
+          listed, you can review or build it from the
+          <a href="https://github.com/raksshana/ucsc-myscheduler-calendar-extension"
+            >source repository</a
+          >.
+        </p>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      Questions or issues:
+      <a href="https://github.com/raksshana/ucsc-myscheduler-calendar-extension/issues"
+        >open a GitHub issue</a
+      >
+      or email <a href="mailto:raksshana.hb21@gmail.com">raksshana.hb21@gmail.com</a>.
+    </footer>
+  </body>
+</html>
