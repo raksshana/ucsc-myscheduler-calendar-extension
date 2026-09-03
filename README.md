@@ -33,36 +33,12 @@ Other behaviour:
   calendar it made)
 - re-exporting the same term replaces the previous export instead of duplicating
 
-## How it works
+## Privacy
 
-- `src/lib/schedule-parse.mjs` / `src/lib/myucsc-parse.mjs` — read the schedule
-  from the two sites' DOM (keyed off table headers / labels, not fragile CSS
-  hashes). MyUCSC also yields instructor names and real per-section dates.
-- `src/lib/datasets/` — instruction windows + holidays, and the final-exam
-  matrix, built from Registrar sources in `data/raw/` (`npm run build:data`).
-- `src/lib/build-events.mjs` + `recurrence.mjs` + `resolve-final.mjs` — turn the
-  parsed schedule into calendar events (`RRULE`, `EXDATE`, `America/Los_Angeles`,
-  `VALARM`).
-- `src/lib/ics.mjs` — serialize those events to RFC 5545 for the `.ics` download.
-- `src/background/service-worker.js` — OAuth (`chrome.identity.getAuthToken`) and
-  all Google Calendar API calls. The one-click OAuth client ID is in
-  `manifest.json` under `oauth2`; the loaded extension's ID must match the
-  client's registered item ID.
-- Nothing is sent to the developer. Parsing and `.ics` generation happen entirely
-  in the browser; the Google option talks only to Google's API with your own
-  token. See [`PRIVACY.md`](PRIVACY.md).
+Everything happens in your browser. Nothing is sent to the developer — no server,
+no analytics, no tracking. The Google option talks only to Google's Calendar API
+using your own account. See [`PRIVACY.md`](PRIVACY.md).
 
-## Develop
+---
 
-```bash
-npm install
-npm run build:data    # data/raw/*  ->  src/lib/datasets/*.json
-npm run icons         # regenerate icons from icons/iconslugai.png
-npm test              # parser + recurrence + ics tests (node --test + jsdom)
-npm run package       # dist/ucsc-schedule-exporter-<version>.zip for the Web Store
-```
-
-Load unpacked: `chrome://extensions` → Developer mode → **Load unpacked** → this
-folder. Then open a schedule page and click the extension.
-
-Chrome Web Store submission material is in [`docs/STORE.md`](docs/STORE.md).
+Building from source: see [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
